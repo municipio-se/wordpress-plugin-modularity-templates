@@ -1,7 +1,7 @@
 {
     "name": "municipio/wordpress-plugin-modularity-templates",
     "description": "Wordpress plugin that adds templates for municipio modules",
-    "type": "composer-plugin",
+    "type": "wordpress-plugin",
     "require": {
         "php": ">=7.3",
         "yoast/duplicate-post": "^4.3"
