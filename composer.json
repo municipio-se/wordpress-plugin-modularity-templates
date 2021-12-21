@@ -1,5 +1,5 @@
 {
-    "name": "whitespace-se/modularity-templates",
+    "name": "municipio/wordpress-plugin-modularity-templates",
     "description": "Wordpress plugin that adds templates for municipio modules",
     "type": "composer-plugin",
     "require": {
@@ -7,6 +7,7 @@
         "yoast/duplicate-post": "^4.3"
     },
     "extra": {
+        "installer-name": "modularity-templates",
         "installer-paths": {
             "./../{$name}/": [
                 "yoast/duplicate-post"
