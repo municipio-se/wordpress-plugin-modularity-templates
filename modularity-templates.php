@@ -4,7 +4,7 @@
  * Plugin Name: Modularity templates
  * Plugin URI: -
  * Description: Turns your Wordpress site into a headless CMS
- * Version: 0.1.0
+ * Version: 0.1.1
  * Author: Whitespace
  * Author URI: https://www.whitespace.se/
  */
