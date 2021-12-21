@@ -1,0 +1,30 @@
+{
+    "name": "whitespace-se/modularity-templates",
+    "description": "Wordpress plugin that adds templates for municipio modules",
+    "type": "composer-plugin",
+    "require": {
+        "php": ">=7.3",
+        "yoast/duplicate-post": "^4.3"
+    },
+    "extra": {
+        "installer-paths": {
+            "./../{$name}/": [
+                "yoast/duplicate-post"
+            ]
+        }
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Municipio\\WP\\ModularityTemplates\\Initializer\\": "",
+            "Municipio\\WP\\ModularityTemplates\\App\\": "src/php"
+        }
+    },
+    "authors": [
+        {
+            "name": "Whitespace Dev",
+            "email": "code@whitespace.se"
+        }
+    ],
+    "minimum-stability": "dev"
+}
