@@ -10,5 +10,6 @@ class App
 
         new \Municipio\WP\ModularityTemplates\App\CloneModulesLink();
         new \Municipio\WP\ModularityTemplates\App\DuplicatePostCloneModulesActions();
+        new \Municipio\WP\ModularityTemplates\App\SetModuleType();
     }
 }
