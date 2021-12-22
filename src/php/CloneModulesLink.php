@@ -30,7 +30,7 @@ class CloneModulesLink
                 return $actions;
             }
 
-            $link_text = __('Clone with modules', 'modularity-templates');
+            $link_text = __('Clone with editable modules', 'modularity-templates');
 
             $actions['clone_modules'] =  "<a href=\"{$this->link_builder->build_link($post, 'display', 'duplicate_post_clone_modules')}\" aria-label=\"{$link_text} - ”{$post->title}”\">{$link_text}</a>";
 
