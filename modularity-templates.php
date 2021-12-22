@@ -3,8 +3,8 @@
 /**
  * Plugin Name: Modularity templates
  * Plugin URI: -
- * Description: Turns your Wordpress site into a headless CMS
- * Version: 0.1.2
+ * Description: Adds option to duplicate posts and their modules
+ * Version: 0.2.0
  * Author: Whitespace
  * Author URI: https://www.whitespace.se/
  */
