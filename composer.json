@@ -1,31 +1,31 @@
 {
-    "name": "municipio/wordpress-plugin-modularity-templates",
-    "description": "Wordpress plugin that adds templates for municipio modules",
-    "type": "wordpress-plugin",
-    "require": {
-        "php": ">=7.3",
-        "yoast/duplicate-post": "^4.3"
-    },
-    "extra": {
-        "installer-name": "modularity-templates",
-        "installer-paths": {
-            "./../{$name}/": [
-                "yoast/duplicate-post"
-            ]
-        }
-    },
-    "license": "AGPL-3.0-or-later",
-    "autoload": {
-        "psr-4": {
-            "Municipio\\WP\\ModularityTemplates\\Initializer\\": "",
-            "Municipio\\WP\\ModularityTemplates\\App\\": "src/php"
-        }
-    },
-    "authors": [
-        {
-            "name": "Whitespace Dev",
-            "email": "code@whitespace.se"
-        }
-    ],
-    "minimum-stability": "dev"
+  "name": "municipio/wordpress-plugin-modularity-templates",
+  "description": "Wordpress plugin that adds templates for municipio modules",
+  "type": "wordpress-plugin",
+  "require": {
+    "php": ">=7.3",
+    "yoast/duplicate-post": "^4.3"
+  },
+  "extra": {
+    "installer-name": "modularity-templates",
+    "installer-paths": {
+      "./../{$name}/": [
+        "yoast/duplicate-post"
+      ]
+    }
+  },
+  "license": "AGPL-3.0-or-later",
+  "autoload": {
+    "psr-4": {
+      "Municipio\\WP\\ModularityTemplates\\Initializer\\": "",
+      "Municipio\\WP\\ModularityTemplates\\App\\": "src/php"
+    }
+  },
+  "authors": [
+    {
+      "name": "Whitespace Dev",
+      "email": "code@whitespace.se"
+    }
+  ],
+  "minimum-stability": "dev"
 }

@@ -4,40 +4,50 @@ namespace Municipio\WP\ModularityTemplates\App;
 
 use Yoast\WP\Duplicate_Post\UI\Link_Builder;
 
-class CloneModulesLink
-{
+class CloneModulesLink {
+  private $enabled_post_types = [];
 
-    private $enabled_post_types = [];
+  public function __construct() {
+    $this->link_builder = new Link_Builder();
 
+    add_action("init", [$this, "add_duplicate_post_with_modules_link"]);
+  }
 
-    public function __construct()
-    {
-        $this->link_builder = new Link_Builder();
+  public function add_duplicate_post_with_modules_link() {
+    $this->enabled_post_types = get_option("duplicate_post_types_enabled");
 
-        add_action('init', [$this, 'add_duplicate_post_with_modules_link']);
+    if (empty($this->enabled_post_types)) {
+      return;
+    }
+    if (!$this->link_builder) {
+      return;
     }
 
+    add_filter(
+      "post_row_actions",
+      function ($actions, $post) {
+        if (
+          !in_array($post->post_type, $this->enabled_post_types) ||
+          preg_match("/^(mod-)/", $post->post_type)
+        ) {
+          return $actions;
+        }
 
-    public function add_duplicate_post_with_modules_link()
-    {
-        $this->enabled_post_types = get_option('duplicate_post_types_enabled');
+        $link_text = __("Clone with editable modules", "modularity-templates");
 
-        if (empty($this->enabled_post_types)) return;
-        if (!($this->link_builder)) return;
+        $actions["clone_modules"] = "<a href=\"{$this->link_builder->build_link(
+          $post,
+          "display",
+          "duplicate_post_clone_modules",
+        )}\" aria-label=\"{$link_text} - ”{$post->title}”\">{$link_text}</a>";
 
-        add_filter('post_row_actions', function ($actions, $post) {
-            if (!in_array($post->post_type, $this->enabled_post_types) || preg_match('/^(mod-)/', $post->post_type)) {
-                return $actions;
-            }
+        // Sort The array
+        ksort($actions);
 
-            $link_text = __('Clone with editable modules', 'modularity-templates');
-
-            $actions['clone_modules'] =  "<a href=\"{$this->link_builder->build_link($post, 'display', 'duplicate_post_clone_modules')}\" aria-label=\"{$link_text} - ”{$post->title}”\">{$link_text}</a>";
-
-            // Sort The array
-            ksort($actions);
-
-            return $actions;
-        }, 10, 2);
-    }
+        return $actions;
+      },
+      10,
+      2,
+    );
+  }
 }

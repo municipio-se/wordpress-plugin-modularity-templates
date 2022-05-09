@@ -2,22 +2,15 @@
 
 namespace Municipio\WP\ModularityTemplates\App;
 
+class ModuleManager extends \Modularity\ModuleManager {
+  public function __construct() {
+  }
 
-class ModuleManager extends \Modularity\ModuleManager
-{
+  public static function getModuleUsage($id, $limit = false) {
+    global $wpdb;
 
-
-    public function __construct()
-    {
-    }
-
-
-    public static function getModuleUsage($id, $limit = false)
-    {
-        global $wpdb;
-
-        // Normal modules
-        $query = "
+    // Normal modules
+    $query = "
             SELECT
                 {$wpdb->postmeta}.post_id,
                 {$wpdb->posts}.post_title,
@@ -32,10 +25,10 @@ class ModuleManager extends \Modularity\ModuleManager
             ORDER BY {$wpdb->posts}.post_title ASC
         ";
 
-        $modules = $wpdb->get_results($query, OBJECT);
+    $modules = $wpdb->get_results($query, OBJECT);
 
-        // Shortcode modules
-        $query = "
+    // Shortcode modules
+    $query = "
             SELECT
                 {$wpdb->posts}.ID AS post_id,
                 {$wpdb->posts}.post_title,
@@ -47,23 +40,26 @@ class ModuleManager extends \Modularity\ModuleManager
             ORDER BY {$wpdb->posts}.post_title ASC
         ";
 
-        $shortcodes = $wpdb->get_results($query, OBJECT);
+    $shortcodes = $wpdb->get_results($query, OBJECT);
 
-        $result = array_merge($modules, $shortcodes);
+    $result = array_merge($modules, $shortcodes);
 
-        if (is_numeric($limit)) {
-            if (count($result) > $limit) {
-                $sliced = array_slice($result, $limit);
-            } else {
-                $sliced = $result;
-            }
+    if (is_numeric($limit)) {
+      if (count($result) > $limit) {
+        $sliced = array_slice($result, $limit);
+      } else {
+        $sliced = $result;
+      }
 
-            return (object) array(
-                'data' => $sliced,
-                'more' => (count($result) > 0 && count($sliced) > 0) ? count($result) - count($sliced) : 0
-            );
-        }
-
-        return $result;
+      return (object) [
+        "data" => $sliced,
+        "more" =>
+          count($result) > 0 && count($sliced) > 0
+            ? count($result) - count($sliced)
+            : 0,
+      ];
     }
+
+    return $result;
+  }
 }

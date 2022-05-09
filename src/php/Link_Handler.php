@@ -10,120 +10,152 @@ use Yoast\WP\Duplicate_Post\Post_Duplicator;
  *
  * @since 1.0
  */
-class Link_Handler extends \Yoast\WP\Duplicate_Post\Handlers\Link_Handler
-{
+class Link_Handler extends \Yoast\WP\Duplicate_Post\Handlers\Link_Handler {
+  /**
+   * Post_Duplicator object.
+   *
+   * @var Post_Duplicator
+   */
+  protected $post_duplicator;
 
-	/**
-	 * Post_Duplicator object.
-	 *
-	 * @var Post_Duplicator
-	 */
-	protected $post_duplicator;
+  /**
+   * Holds the permissions helper.
+   *
+   * @var Permissions_Helper
+   */
+  protected $permissions_helper;
 
-	/**
-	 * Holds the permissions helper.
-	 *
-	 * @var Permissions_Helper
-	 */
-	protected $permissions_helper;
+  /**
+   * Initializes the class.
+   *
+   * @param Post_Duplicator    $post_duplicator    The Post_Duplicator object.
+   * @param Permissions_Helper $permissions_helper The Permissions Helper object.
+   */
+  public function __construct(
+    Post_Duplicator $post_duplicator,
+    Permissions_Helper $permissions_helper
+  ) {
+    $this->post_duplicator = $post_duplicator;
+    $this->permissions_helper = $permissions_helper;
+  }
 
-	/**
-	 * Initializes the class.
-	 *
-	 * @param Post_Duplicator    $post_duplicator    The Post_Duplicator object.
-	 * @param Permissions_Helper $permissions_helper The Permissions Helper object.
-	 */
-	public function __construct(Post_Duplicator $post_duplicator, Permissions_Helper $permissions_helper)
-	{
-		$this->post_duplicator    = $post_duplicator;
-		$this->permissions_helper = $permissions_helper;
-	}
+  /**
+   * Adds hooks to integrate with WordPress.
+   *
+   * @return void
+   */
+  public function register_hooks() {
+    \add_action("admin_action_duplicate_post_clone_modules", [
+      $this,
+      "clone_modules_link_action_handler",
+    ]);
+  }
 
-	/**
-	 * Adds hooks to integrate with WordPress.
-	 *
-	 * @return void
-	 */
-	public function register_hooks()
-	{
-		\add_action('admin_action_duplicate_post_clone_modules', [$this, 'clone_modules_link_action_handler']);
-	}
+  /**
+   * Handles the action for copying a post with it's modules and redirecting to the post list.
+   *
+   * @return void
+   */
+  public function clone_modules_link_action_handler() {
+    if (!$this->permissions_helper->is_current_user_allowed_to_copy()) {
+      \wp_die(
+        \esc_html__(
+          "Current user is not allowed to copy posts.",
+          "duplicate-post",
+        ),
+      );
+    }
 
+    if (
+      !(
+        isset($_GET["post"]) ||
+        isset($_POST["post"]) ||
+        (isset($_REQUEST["action"]) &&
+          $_REQUEST["action"] === "duplicate_post_clone")
+      )
+    ) {
+      \wp_die(
+        \esc_html__(
+          "No post to duplicate has been supplied!",
+          "duplicate-post",
+        ),
+      );
+    }
 
+    $id = isset($_GET["post"])
+      ? \intval(\wp_unslash($_GET["post"]))
+      : \intval(\wp_unslash($_POST["post"]));
 
-	/**
-	 * Handles the action for copying a post with it's modules and redirecting to the post list.
-	 *
-	 * @return void
-	 */
-	public function clone_modules_link_action_handler()
-	{
-		if (!$this->permissions_helper->is_current_user_allowed_to_copy()) {
-			\wp_die(\esc_html__('Current user is not allowed to copy posts.', 'duplicate-post'));
-		}
+    \check_admin_referer("duplicate_post_clone_modules_" . $id);
 
+    $post = \get_post($id);
 
-		if (!(isset($_GET['post']) || isset($_POST['post'])
-			|| (isset($_REQUEST['action']) && $_REQUEST['action'] === 'duplicate_post_clone'))) {
-			\wp_die(\esc_html__('No post to duplicate has been supplied!', 'duplicate-post'));
-		}
+    if (!$post) {
+      \wp_die(
+        \esc_html(
+          \__(
+            "Copy creation failed, could not find original:",
+            "duplicate-post",
+          ) .
+            " " .
+            $id,
+        ),
+      );
+    }
 
-		$id = (isset($_GET['post']) ? \intval(\wp_unslash($_GET['post'])) : \intval(\wp_unslash($_POST['post'])));
+    if ($this->permissions_helper->is_rewrite_and_republish_copy($post)) {
+      \wp_die(
+        \esc_html__(
+          "You cannot create a copy of a post which is intended for Rewrite & Republish.",
+          "duplicate-post",
+        ),
+      );
+    }
 
-		\check_admin_referer('duplicate_post_clone_modules_' . $id);
+    $new_id = \duplicate_post_create_duplicate($post);
 
-		$post = \get_post($id);
+    if (\is_wp_error($new_id)) {
+      \wp_die(
+        \esc_html__(
+          "Copy creation failed, could not create a copy.",
+          "duplicate-post",
+        ),
+      );
+    }
 
-		if (!$post) {
-			\wp_die(
-				\esc_html(
-					\__('Copy creation failed, could not find original:', 'duplicate-post') . ' '
-						. $id
-				)
-			);
-		}
+    $post_type = $post->post_type;
+    $sendback = \wp_get_referer();
+    if (
+      !$sendback ||
+      \strpos($sendback, "post.php") !== false ||
+      \strpos($sendback, "post-new.php") !== false
+    ) {
+      if ($post_type === "attachment") {
+        $sendback = \admin_url("upload.php");
+      } else {
+        $sendback = \admin_url("edit.php");
+        if (!empty($post_type)) {
+          $sendback = \add_query_arg("post_type", $post_type, $sendback);
+        }
+      }
+    } else {
+      $sendback = \remove_query_arg(
+        ["trashed", "untrashed", "deleted", "cloned", "cloned_modules", "ids"],
+        $sendback,
+      );
+    }
 
-		if ($this->permissions_helper->is_rewrite_and_republish_copy($post)) {
-			\wp_die(
-				\esc_html__('You cannot create a copy of a post which is intended for Rewrite & Republish.', 'duplicate-post')
-			);
-		}
-
-
-		$new_id = \duplicate_post_create_duplicate($post);
-
-		if (\is_wp_error($new_id)) {
-			\wp_die(
-				\esc_html__('Copy creation failed, could not create a copy.', 'duplicate-post')
-			);
-		}
-
-		$post_type = $post->post_type;
-		$sendback  = \wp_get_referer();
-		if (!$sendback || \strpos($sendback, 'post.php') !== false || \strpos($sendback, 'post-new.php') !== false) {
-			if ($post_type === 'attachment') {
-				$sendback = \admin_url('upload.php');
-			} else {
-				$sendback = \admin_url('edit.php');
-				if (!empty($post_type)) {
-					$sendback = \add_query_arg('post_type', $post_type, $sendback);
-				}
-			}
-		} else {
-			$sendback = \remove_query_arg(['trashed', 'untrashed', 'deleted', 'cloned', 'cloned_modules', 'ids'], $sendback);
-		}
-
-		// Redirect to the post list screen.
-		\wp_safe_redirect(
-			\add_query_arg(
-				[
-					'cloned' => 1,
-					'cloned_modules' => 1,
-					'ids'    => $post->ID,
-				],
-				$sendback
-			)
-		);
-		exit();
-	}
+    // Redirect to the post list screen.
+    \wp_safe_redirect(
+      \add_query_arg(
+        [
+          "cloned" => 1,
+          "cloned_modules" => 1,
+          "ids" => $post->ID,
+        ],
+        $sendback,
+      ),
+    );
+    exit();
+  }
 }
