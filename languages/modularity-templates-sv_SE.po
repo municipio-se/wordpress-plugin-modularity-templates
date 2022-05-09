@@ -1,8 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity templates\n"
-"POT-Creation-Date: 2021-12-22 14:56+0100\n"
-"PO-Revision-Date: 2021-12-22 14:56+0100\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wordpress-plugin-"
+"modularity-templates\n"
+"POT-Creation-Date: 2022-05-09T17:08:04+00:00\n"
+"PO-Revision-Date: 2022-05-09 19:10+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -10,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.3\n"
+"X-Generator: Poedit 3.0.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: modularity-templates.php\n"
@@ -21,47 +23,53 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
-#: src/php/CloneModulesLink.php:33
-msgid "Clone with editable modules"
-msgstr "Duplicera med redigeringsbara moduler"
-
-#: src/php/Link_Handler.php:62
-msgid "Current user is not allowed to copy posts."
-msgstr ""
-
-#: src/php/Link_Handler.php:68
-msgid "No post to duplicate has been supplied!"
-msgstr ""
-
-#: src/php/Link_Handler.php:80
-msgid "Copy creation failed, could not find original:"
-msgstr ""
-
-#: src/php/Link_Handler.php:88
-msgid ""
-"You cannot create a copy of a post which is intended for Rewrite & Republish."
-msgstr ""
-
-#: src/php/Link_Handler.php:97
-msgid "Copy creation failed, could not create a copy."
-msgstr ""
-
-#. Plugin Name of the plugin/theme
+#. Plugin Name of the plugin
 msgid "Modularity templates"
 msgstr "Modulmallar"
 
-#. Plugin URI of the plugin/theme
+#. Plugin URI of the plugin
 msgid "-"
-msgstr ""
+msgstr "-"
 
-#. Description of the plugin/theme
+#. Description of the plugin
+#, fuzzy
 msgid "Adds option to duplicate posts and their modules"
-msgstr ""
+msgstr "Lägger till möjligheten att duplicera inlägg och deras moduler"
 
-#. Author of the plugin/theme
+#. Author of the plugin
 msgid "Whitespace"
-msgstr ""
+msgstr "Whitespace"
 
-#. Author URI of the plugin/theme
+#. Author URI of the plugin
+#, fuzzy
 msgid "https://www.whitespace.se/"
-msgstr ""
+msgstr "https://www.whitespace.se/"
+
+#: src/php/CloneModulesLink.php:33
+msgid "Clone with editable modules"
+msgstr "Klona med redigerbara moduler"
+
+#: src/php/SetModuleType.php:43
+msgid "Shared"
+msgstr "Delad"
+
+#~ msgid "Current user is not allowed to copy posts."
+#~ msgstr "Nuvarande användare saknar behörighet att kopiera inlägg."
+
+#~ msgid "No post to duplicate has been supplied!"
+#~ msgstr "Inget inlägg att kopiera har valts!"
+
+#~ msgid "Copy creation failed, could not find original:"
+#~ msgstr "Kopiering misslyckades, kunde inte hitta original:"
+
+#, fuzzy
+#~ msgid ""
+#~ "You cannot create a copy of a post which is intended for Rewrite & "
+#~ "Republish."
+#~ msgstr ""
+#~ "Du kan inte skapa en kopia av ett inlägg som är avsett att skrivas om och "
+#~ "återpubliceras."
+
+#, fuzzy
+#~ msgid "Copy creation failed, could not create a copy."
+#~ msgstr "Kopiering misslyckades, kunde inte skapa en kopia."

@@ -39,6 +39,13 @@ class SetModuleType
             $modules[$index]['usage'] = $this->module_manager->getModuleUsage($module['id']);
         }
 
+        $labels = [
+            'shared' => __('Shared', 'modularity-templates'),
+            'local' => '',
+        ];
+
+        $labels = apply_filters('modularity-templates/set-module-type/labels', $labels);
+
         /* enqueue scripts*/
         wp_enqueue_script(
             'modularity-templates-scripts',
@@ -48,6 +55,7 @@ class SetModuleType
             true
         );
         wp_localize_script('modularity-templates-scripts', 'moduleData', $modules);
+        wp_localize_script('modularity-templates-scripts', 'labels', $labels);
 
         /* enqueue styles */
         wp_enqueue_style('modularity-templates-style', plugin_dir_url(__DIR__) . 'css/Index.css');
