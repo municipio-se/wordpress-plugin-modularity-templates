@@ -34,6 +34,10 @@ class CloneModulesLink {
         }
 
         $link_text = __("Clone with editable modules", "modularity-templates");
+        $link_text = apply_filters(
+          "modularity-templates/clone_with_modules_link_label",
+          $link_text,
+        );
 
         $actions["clone_modules"] = "<a href=\"{$this->link_builder->build_link(
           $post,
