@@ -4,7 +4,7 @@
  * Plugin Name: Modularity templates
  * Plugin URI: -
  * Description: Adds option to duplicate posts and their modules
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Whitespace
  * Author URI: https://www.whitespace.se/
  */

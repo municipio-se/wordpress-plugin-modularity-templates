@@ -1,3 +1,15 @@
+## [1.1.0](https://github.com/municipio-se/wordpress-plugin-modularity-templates/compare/v1.0.0...v1.1.0) (2022-06-27)
+
+
+### Features
+
+* Add `modularity-templates/clone_with_modules_link_label` filter ([94be2fb](https://github.com/municipio-se/wordpress-plugin-modularity-templates/commit/94be2fb417c9739b001f953e44f8dbbe4a2e10d9))
+
+
+### Bug Fixes
+
+* Load translations correctly ([4024a1a](https://github.com/municipio-se/wordpress-plugin-modularity-templates/commit/4024a1a34ccb3881433a0375a862b9368fdacec8))
+
 ## [1.0.0](https://github.com/municipio-se/wordpress-plugin-modularity-templates/compare/v0.2.1...v1.0.0) (2022-05-09)
 
 
