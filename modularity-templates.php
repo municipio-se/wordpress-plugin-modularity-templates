@@ -9,10 +9,22 @@
  * Author URI: https://www.whitespace.se/
  */
 
-define("PLUGIN_PATH", plugin_basename(dirname(__FILE__)));
+define("MODULARITY_TEMPLATES_PLUGIN_FILE", __FILE__);
+define("MODULARITY_TEMPLATES_PATH", dirname(__FILE__));
+define(
+  "MODULARITY_TEMPLATES_AUTOLOAD_PATH",
+  MODULARITY_TEMPLATES_PATH . "/autoload",
+);
 
-/** Load the text domain */
-load_muplugin_textdomain("modularity-templates", PLUGIN_PATH . "/languages");
+add_action("init", function () {
+  $path = plugin_basename(dirname(__FILE__)) . "/languages";
+  load_plugin_textdomain("modularity-templates", false, $path);
+  load_muplugin_textdomain("modularity-templates", $path);
+});
+
+array_map(static function () {
+  include_once func_get_args()[0];
+}, glob(MODULARITY_TEMPLATES_AUTOLOAD_PATH . "/*.php"));
 
 // Start application
 add_action(
